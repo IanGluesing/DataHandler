@@ -1,18 +1,19 @@
-add_library(data_handler
+add_library(data_handler STATIC src/data_handler.cpp)
 
-    data_handler.cpp
+target_include_directories(data_handler PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>
 )
 
-target_include_directories(
-    data_handler
-        PUBLIC
+target_link_libraries(data_handler
+    PUBLIC
 
-    ${CMAKE_CURRENT_SOURCE_DIR}/
+        data_forwarder_library
 )
 
-target_link_libraries(
-    data_handler
-
-    data_forwarder_library
-    libflatjson
+install(TARGETS data_handler
+    EXPORT MyLibsTargets
+    ARCHIVE DESTINATION lib
 )
+
+install(DIRECTORY include/ DESTINATION include)
